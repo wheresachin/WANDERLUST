@@ -7,7 +7,11 @@ const Listing = require('../models/listing.js');
 const Review = require('../models/review.js');
 const {isLoggedIn} = require("../middleware.js");
 const {isOwner}= require("../middleware.js");
-const listingController = require("../controllers/listings.js")
+const listingController = require("../controllers/listings.js");
+
+const multer  = require('multer');
+const { storage } = require("../cloudconfig.js");
+const upload = multer({ storage });
 
 
 const validateListing =(req, res, next) =>{
@@ -34,28 +38,24 @@ const validateReview =(req, res, next) =>{
   }
 };
 
-//Index Route
-router.get("/",warpAsync(listingController.index));
+router
+.route("/")
+.get(warpAsync(listingController.index))
+.post(isLoggedIn,validateListing, upload.single('listing[image]'), warpAsync(listingController.createlisting)
+);
+
 
 //New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-//Show Route
-router.get("/:id", warpAsync(listingController.showListing));
-
-//Create Route
-router.post("/", validateListing, isLoggedIn, warpAsync(listingController.createlisting));
+router
+.route("/:id")
+.get(warpAsync(listingController.showListing))
+.put(isLoggedIn,isOwner, upload.single('listing[image]'),validateListing, warpAsync(listingController.updatelisting))
+.delete(isLoggedIn,isOwner , warpAsync(listingController.deletelisting)
+);
 
 //Edit Route
 router.get("/:id/edit", isLoggedIn, isOwner ,warpAsync(listingController.editlisting));
-
-//Update Route
-router.put("/:id", isLoggedIn,isOwner ,validateListing, warpAsync(listingController.updatelisting));
-
-
-//Delete Route
-router.delete("/:id", isLoggedIn,isOwner , warpAsync(listingController.deletelisting));
-
-
 
 module.exports = router;

@@ -26,12 +26,11 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createlisting = async (req, res, next) => {
-  let url = req.body.listing.image;
+  let url =req.file.path;
+  let filename= req.file.filename;
   const newListing = new Listing(req.body.listing);
-  if (url !== undefined) {
-    newListing.image = { url };
-  }
   newListing.owner = req.user._id;
+  newListing.image = {url,filename};
   await newListing.save();
   req.flash("success", "New Listing created!");
   res.redirect("/listings")
@@ -48,16 +47,16 @@ module.exports.editlisting = async (req, res) => {
 };
 
 module.exports.updatelisting = async (req, res) => {
-  if (!req.body.listing) {
-    throw new ExpressError(400, "send valid data for listing")
-  }
   let { id } = req.params;
-  let url = req.body.listing.image;
   let updatedListing = { ...req.body.listing };
-  if (url !== undefined) {
-    updatedListing.image = { url };
+  let listing = await Listing.findByIdAndUpdate(id, updatedListing);
+  if(typeof req.file !=="undefined"){
+  let url =req.file.path;
+  let filename= req.file.filename;
+  listing.image= {url,filename};
+  await listing.save();
   }
-  await Listing.findByIdAndUpdate(id, updatedListing);
+ 
   req.flash("success", "Listing Updated!");
    return res.redirect(`/listings/${id}`);
 };
