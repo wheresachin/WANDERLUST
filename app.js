@@ -1,8 +1,6 @@
 if (process.env.NODE_ENV != "production"){
   require("dotenv").config();
 }
-
-require('dotenv').config()
 const express = require("express");
 const app = express();
 const mongoose = require('mongoose');
@@ -11,7 +9,6 @@ const methodOverride = require("method-override");
 const ExpressError = require("./utils/ExpressError.js");
 const ejsMate = require('ejs-mate');
 const listings = require("./routes/listing.js");
-const review = require("./models/review.js");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
