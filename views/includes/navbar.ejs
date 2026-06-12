@@ -1,20 +1,33 @@
 <style>
-  .btn-search{
+  .btn-search {
     background-color: #fe424d;
     color: #fff;
-    border-radius: 5px;
-    padding: 0 1rem 0 1rem;
-
+    border-radius: 25px;
+    padding: 0 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease-in-out;
+    border: none;
   }
-  .btn-search:hover{
-    background-color: #fe424d;
+  .btn-search:hover {
+    background-color: #e0313c;
     color: #fff;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(254, 66, 77, 0.25);
   }
-
-  .btn-search{
-    display: inline;
-    margin-right: 0.5rem;
-
+  .btn-search i {
+    margin-right: 0.35rem;
+  }
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 1.5rem;
+    min-width: 300px;
+    transition: all 0.25s ease-in-out;
+  }
+  .search-inp:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 0.25rem rgba(254, 66, 77, 0.2);
   }
 </style>
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
@@ -27,13 +40,13 @@
       <div class="navbar-nav">
         <a class="nav-link" href="/listings">Explore</a>
       </div>
-      <div navbar-nav ms-auto>
-      <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-      <button class="btn btn-search" type="submit">
-        <i class="fa-solid fa-magnifying-glass"></i>Search
-      </button>
-    </form>
+      <div class="navbar-nav mx-auto">
+        <form class="d-flex" role="search">
+          <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations" aria-label="Search"/>
+          <button class="btn btn-search" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
       </div>
       <div class="navbar-nav ms-auto">
         <% if (!currUser) { %>
